@@ -2,7 +2,12 @@
 
 session_start();
 
-require_once __DIR__ . '/model/conexion.php';
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: views/login.php");
+    exit();
+}
+
+require_once __DIR__ . '/model/MYSQL.php';
 
 $customFields = [
     ['name' => 'autor', 'label' => 'Autor', 'type' => 'text'],
@@ -108,7 +113,7 @@ function buildQuery(array $overrides = []) {
     </form>
 
     <div class="d-flex align-items-center">
-      <a href="#" class="btn btn-outline-danger">Cerrar sesión</a>
+      <a href="./views/logout.php" class="btn btn-outline-danger">Cerrar sesión</a>
     </div>
   </div>
 </nav>

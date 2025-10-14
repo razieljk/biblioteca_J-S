@@ -1,53 +1,52 @@
 <?php
 session_start();
-require_once '../modelo/MYSQL.php';
+require_once '../model/MYSQL.php';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: ../views/login.php");
     exit();
 }
 
-$documento = trim($_POST['documento'] ?? '');
-$password  = $_POST['password'] ?? '';
+$email = trim($_POST['email'] ?? '');
+$password = $_POST['password'] ?? '';
 
-if (empty($documento) || empty($password)) {
+if (empty($email) || empty($password)) {
     header("Location: ../views/login.php?error=1");
     exit();
 }
 
 $mysql = new MYSQL();
 $mysql->conectar();
+$conn = $mysql->getConexion();
 
-$query = "
-    SELECT e.*, c.nombre AS cargo_nombre 
-    FROM empleados e
-    LEFT JOIN cargos c ON e.cargo_id = c.id
-    WHERE e.documento='$documento' 
-    LIMIT 1
-";
+$sql = "SELECT * FROM usuarios WHERE email = ? LIMIT 1";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$resultado = $stmt->get_result();
 
-$resultado = $mysql->consulta($query);
+if ($resultado && $usuario = $resultado->fetch_assoc()) {
+    if (md5($password) === $usuario['contrasena']) {
+        $_SESSION['usuario_id'] = $usuario['id'];
+        $_SESSION['nombre']     = $usuario['nombre'] . " " . $usuario['apellido'];
+        $_SESSION['email']      = $usuario['email'];
+        $_SESSION['tipo']       = $usuario['tipo'];
 
-if ($resultado && $empleado = $resultado->fetch_assoc()) {
-    if ($empleado['estado'] !== 'Activo') {
+        $stmt->close();
         $mysql->desconectar();
-        header("Location: ../views/login.php?error=2");
+        header("Location: ../dashboard.php");
+        exit();
+    } else {
+       
+        $stmt->close();
+        $mysql->desconectar();
+        header("Location: ../views/login.php?error=1");
         exit();
     }
-
-    if (password_verify($password, $empleado['password'])) {
-        $_SESSION['empleado_id']   = $empleado['id'];
-        $_SESSION['nombre']        = $empleado['nombre_completo'];
-        $_SESSION['correo']        = $empleado['correo'];
-        $_SESSION['cargo_id']      = $empleado['cargo_id'];
-        $_SESSION['cargo_nombre']  = $empleado['cargo_nombre'];
-
-        $mysql->desconectar();
-        header("Location: ../views/index.php");
-        exit();
-    }
+} else {
+    $stmt->close();
+    $mysql->desconectar();
+    header("Location: ../views/login.php?error=1");
+    exit();
 }
-
-$mysql->desconectar();
-header("Location: ../views/login.php?error=1");
-exit();
+?>
