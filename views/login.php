@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (isset($_SESSION['empleado_id'])) {
-    header("Location: index.php");
+if (isset($_SESSION['usuario_id'])) {
+    header("Location: ../dashboard.php"); 
     exit();
 }
 ?>
@@ -9,55 +9,36 @@ if (isset($_SESSION['empleado_id'])) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Login - ServiPlus</title>
+    <title>Inicio de Sesión</title>
     <link 
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
         rel="stylesheet"
     >
-    <style>
-        body {
-            background-color: #008000;
-        }
-        .login-container {
-            max-width: 400px;
-            margin: 80px auto;
-            padding: 30px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-        }
-        h1 {
-            margin-bottom: 30px;
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-    </style>
 </head>
-<body>
-    <div class="login-container text-center">
-        <h1>Login Empleado</h1>
+<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+
+    <div class="card shadow p-4" style="width: 350px;">
+        <h3 class="text-center mb-3">Inicio de Sesión</h3>
 
         <?php if (isset($_GET['error'])): ?>
-            <div class="alert alert-danger">
+            <div class="alert alert-danger text-center">
                 <?php
                     if ($_GET['error'] == 1) {
-                        echo "Documento o contraseña incorrecta.";
-                    } elseif ($_GET['error'] == 2) {
-                        echo "Empleado inactivo, no puede ingresar.";
+                        echo "Correo o contraseña incorrecta.";
                     }
                 ?>
             </div>
         <?php endif; ?>
 
-        <form method="post" action="../controlador/login_p.php">
+        <form method="post" action="../controller/login_p.php">
             <div class="mb-3 text-start">
-                <label for="documento" class="form-label">Documento</label>
+                <label for="email" class="form-label">Correo electrónico</label>
                 <input 
-                    type="text" 
+                    type="email" 
                     class="form-control" 
-                    id="documento" 
-                    name="documento" 
-                    placeholder="Ingrese su documento" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Ingrese su correo" 
                     required
                 >
             </div>
@@ -73,7 +54,7 @@ if (isset($_SESSION['empleado_id'])) {
                 >
             </div>
             <button type="submit" class="btn btn-primary w-100">
-                Iniciar sesion
+                Iniciar sesión
             </button>
         </form>
     </div>

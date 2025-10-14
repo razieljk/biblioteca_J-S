@@ -1,8 +1,11 @@
 <?php
 session_start();
-require_once __DIR__ . '/model/conexion.php';
+require_once __DIR__ . '/model/MYSQL.php';
 
-// 🔹 Consulta los libros desde la base de datos
+$db = new MYSQL();
+$db->conectar();
+$conn = $db->getConexion();
+
 $sql = "SELECT id, titulo, autor, categoria, descripcion, imagen FROM libro";
 $result = $conn->query($sql);
 
@@ -16,7 +19,6 @@ if ($result && $result->num_rows > 0) {
 $search = $_GET['search'] ?? '';
 $categoriaFiltro = $_GET['categoria'] ?? '';
 
-// 🔹 Filtrado
 $filtered = array_filter($books, function ($b) use ($search, $categoriaFiltro) {
     $ok = true;
 
@@ -39,6 +41,8 @@ $totalRows = count($filtered);
 $totalPages = max(1, (int)ceil($totalRows / $perPage));
 $offset = ($page - 1) * $perPage;
 $visible = array_slice($filtered, $offset, $perPage);
+
+$db->desconectar();
 ?>
 <!doctype html>
 <html lang="es">
@@ -89,7 +93,6 @@ $visible = array_slice($filtered, $offset, $perPage);
 </head>
 <body>
 
-<!-- 🔹 Navbar superior -->
 <nav class="navbar navbar-light bg-white border-bottom sticky-top">
   <div class="container-fluid">
     <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
@@ -100,7 +103,6 @@ $visible = array_slice($filtered, $offset, $perPage);
   </div>
 </nav>
 
-<!-- 🔹 Sidebar (oculta incluso en pantallas grandes) -->
 <div class="offcanvas offcanvas-start sidebar text-white" tabindex="-1" id="sidebar">
   <div class="offcanvas-header border-bottom">
     <h5 class="offcanvas-title">Menú</h5>
@@ -116,11 +118,9 @@ $visible = array_slice($filtered, $offset, $perPage);
   </div>
 </div>
 
-<!-- 🔹 Contenido principal -->
 <div class="container-fluid p-4">
   <h4>Libros disponibles <small class="text-muted">(<?= $totalRows ?> encontrados)</small></h4>
 
-  <!-- 🔹 Filtros -->
   <form method="get" action="dashboard.php" class="row g-3 align-items-end mt-2 mb-4">
     <div class="col-md-4 col-lg-3">
       <label class="form-label">Categoría</label>
