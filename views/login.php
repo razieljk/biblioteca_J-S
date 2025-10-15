@@ -42,6 +42,7 @@ if (isset($_SESSION['usuario_id'])) {
                     required
                 >
             </div>
+
             <div class="mb-3 text-start">
                 <label for="password" class="form-label">Contraseña</label>
                 <input 
@@ -53,9 +54,17 @@ if (isset($_SESSION['usuario_id'])) {
                     required
                 >
             </div>
-            <button type="submit" class="btn btn-primary w-100">
+
+            <button type="submit" class="btn btn-primary w-100 mb-3">
                 Iniciar sesión
             </button>
+
+            <div class="text-center">
+                <p class="mb-0">¿No tienes una cuenta?</p>
+                <a href="registro.php" class="text-decoration-none fw-bold text-primary">
+                    Regístrate aquí
+                </a>
+            </div>
         </form>
     </div>
 
