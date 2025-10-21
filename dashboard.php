@@ -51,45 +51,7 @@ $db->desconectar();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard - Mis Libros</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', Arial, Helvetica, sans-serif;
-      background: #f6f8fb;
-      color: #222;
-    }
-    .sidebar {
-      min-height: 100vh;
-      background-color: #0d6efd;
-      color: #fff;
-    }
-    .sidebar a {
-      color: #fff;
-      text-decoration: none;
-      display: block;
-      padding: .75rem 1rem;
-      border-radius: .375rem;
-    }
-    .sidebar a:hover, .sidebar a.active {
-      background-color: rgba(255,255,255,0.15);
-    }
-    .book-card {
-      border: none;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 6px 18px rgba(15,23,42,0.06);
-      transition: transform .18s ease, box-shadow .18s ease;
-      background: #fff;
-    }
-    .book-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 28px rgba(15,23,42,0.09);
-    }
-    .book-card img {
-      height: 180px;
-      width: 100%;
-      object-fit: cover;
-    }
-  </style>
+  <link rel="stylesheet" href="./asset/css/style.css">
 </head>
 <body>
 
@@ -99,7 +61,7 @@ $db->desconectar();
       ☰
     </button>
     <a class="navbar-brand fw-bold ms-2" href="#">Biblioteca</a>
-    <a href="#" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
+    <a href="views/logout.php" class="btn btn-outline-danger btn-sm">Cerrar sesión</a>
   </div>
 </nav>
 

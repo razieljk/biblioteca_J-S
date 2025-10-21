@@ -4,97 +4,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro de Sesión</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      width: 350px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    label {
-      display: block;
-      text-align: left;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #555;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    p {
-      margin-top: 15px;
-      font-size: 0.9rem;
-      color: #555;
-    }
-
-    a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+    rel="stylesheet">
 </head>
-<body>
+<body class="bg-light d-flex justify-content-center align-items-center vh-100">
 
-  <div class="container">
-    <h2>Registro de Sesión</h2>
+  <div class="card shadow-lg p-4" style="width: 380px; border-radius: 1rem;">
+    <h3 class="text-center mb-4 text-primary">Registro de Sesión</h3>
 
-    <form action="#" method="post">
-      <label for="username">Nombre de usuario:</label>
-      <input type="text" id="username" name="username" placeholder="Ingresa tu nombre de usuario" required>
+    <form action="../controller/registro_p.php" method="post">
+      <div class="mb-3">
+        <label for="username" class="form-label">Nombre de usuario</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="nombre" 
+          name="nombre" 
+          placeholder="Ingresa tu nombre de usuario" 
+          required>
+      </div>
 
-      <label for="password">Contraseña:</label>
-      <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+       <div class="mb-3">
+        <label for="username" class="form-label">Apellido de usuario</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="apellido" 
+          name="apellido" 
+          placeholder="Ingresa tu apellido de usuario" 
+          required>
+      </div>
 
-      <button type="submit">Registrar</button>
+       <div class="mb-3">
+        <label for="username" class="form-label">Email de usuario</label>
+        <input 
+          type="email" 
+          class="form-control" 
+          id="email" 
+          name="email" 
+          placeholder="Ingresa tu email de usuario" 
+          pattern="[a-z0-9._%+-]+@gmail\.com$"
+          required>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input 
+          type="password" 
+          class="form-control" 
+          id="contrasena" 
+          name="contrasena" 
+          placeholder="Ingresa tu contraseña" 
+          required>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 py-2">
+        Registrar
+      </button>
     </form>
 
-    <p>¿Ya tienes cuenta? <a href="./login.php">Inicia sesión</a></p>
+    <div class="text-center mt-3">
+      <p class="mb-0">¿Ya tienes una cuenta?</p>
+      <a href="./login.php" class="fw-bold text-decoration-none text-primary">
+        Inicia sesión aquí
+      </a>
+    </div>
   </div>
 
+  <script 
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+  </script>
 </body>
 </html>
