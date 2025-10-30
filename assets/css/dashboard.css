@@ -1,0 +1,65 @@
+.sidebar {
+  min-height: 100vh;
+  background-color: #0d6efd;
+  color: #fff;
+}
+.sidebar a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: .75rem 1rem;
+  border-radius: .375rem;
+}
+.sidebar a:hover, .sidebar a.active {
+  background-color: rgba(255,255,255,0.15);
+}
+.submenu a {
+  color: #cfd8ff !important;
+  font-size: 0.9rem;
+  padding-left: 2rem;
+}
+.submenu a:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+#submenuLibros {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: max-height 0.45s ease, opacity 0.4s ease, transform 0.35s ease;
+}
+#submenuLibros.open {
+  max-height: 200px;
+  opacity: 1;
+  transform: translateY(0);
+}
+span.small {
+  transition: transform 0.3s ease;
+}
+span.small.rotate {
+  transform: rotate(180deg);
+}
+
+body {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  background: #f6f8fb;
+  color: #222;
+}
+.book-card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+  transition: transform .18s ease, box-shadow .18s ease;
+  background: #fff;
+}
+.book-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(15,23,42,0.09);
+}
+.book-card img {
+  height: 180px;
+  width: 100%;
+  object-fit: cover;
+}

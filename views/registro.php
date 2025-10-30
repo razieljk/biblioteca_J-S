@@ -1,94 +1,84 @@
+<?php
+require_once __DIR__ . '/../model/MYSQL.php';
+
+$mensaje = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre = trim($_POST['nombre'] ?? '');
+    $apellido = trim($_POST['apellido'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $contrasena = trim($_POST['contrasena'] ?? '');
+
+    if ($nombre === '' || $apellido === '' || $email === '' || $contrasena === '') {
+        $mensaje = 'Por favor completa todos los campos.';
+    } else {
+        $db = new MYSQL();
+        $db->conectar();
+        $conn = $db->getConexion();
+
+        $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
+        if (!$stmt) {
+            die("Error en la consulta: " . $conn->error);
+        }
+
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $mensaje = 'El correo ya está registrado.';
+        } else {
+            $contrasenaHash = password_hash($contrasena, PASSWORD_BCRYPT);
+            $tipo = 'cliente';
+            $stmt = $conn->prepare("INSERT INTO usuarios (nombre, apellido, email, contrasena, tipo) VALUES (?, ?, ?, ?, ?)");
+            if (!$stmt) {
+                die("Error en la inserción: " . $conn->error);
+            }
+            $stmt->bind_param("sssss", $nombre, $apellido, $email, $contrasenaHash, $tipo);
+
+            if ($stmt->execute()) {
+                header("Location: login.php?registro=exitoso");
+                exit;
+            } else {
+                $mensaje = 'Error al registrar el usuario.';
+            }
+        }
+
+        $stmt->close();
+        $db->desconectar();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Sesión</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      width: 350px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    label {
-      display: block;
-      text-align: left;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #555;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    p {
-      margin-top: 15px;
-      font-size: 0.9rem;
-      color: #555;
-    }
-
-    a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <title>Registro - Biblioteca Virtual</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/registro.css" rel="stylesheet">
 </head>
 <body>
 
-  <div class="container">
-    <h2>Registro de Sesión</h2>
+  <div class="registro-card">
+    <h2>Registro de usuario</h2>
 
-    <form action="#" method="post">
-      <label for="username">Nombre de usuario:</label>
-      <input type="text" id="username" name="username" placeholder="Ingresa tu nombre de usuario" required>
+    <?php if ($mensaje): ?>
+      <div class="alert alert-warning"><?= htmlspecialchars($mensaje) ?></div>
+    <?php endif; ?>
 
-      <label for="password">Contraseña:</label>
-      <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+    <form method="post">
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+
+      <label for="apellido">Apellido:</label>
+      <input type="text" id="apellido" name="apellido" placeholder="Ingresa tu apellido" required>
+
+      <label for="email">Correo electrónico:</label>
+      <input type="email" id="email" name="email" placeholder="Ejemplo@gmail.com" required>
+
+      <label for="contrasena">Contraseña:</label>
+      <input type="password" id="contrasena" name="contrasena" placeholder="Ingresa tu contraseña" required>
 
       <button type="submit">Registrar</button>
     </form>
