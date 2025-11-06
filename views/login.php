@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['usuario_id'])) {
-    header("Location: ../dashboard.php"); 
+    header("Location: ../dashboard.php");
     exit();
 }
 ?>
@@ -9,19 +9,86 @@ if (isset($_SESSION['usuario_id'])) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio de Sesión</title>
-    <link 
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-        rel="stylesheet"
-    >
-</head>
-<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+    <title>Inicio de Sesión - Biblioteca Virtual</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <div class="card shadow p-4" style="width: 350px;">
-        <h3 class="text-center mb-3">Inicio de Sesión</h3>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #f5deb3, #fff8e7);
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url('https://cdn.pixabay.com/photo/2016/03/09/09/17/books-1245690_1280.jpg') center/cover no-repeat;
+            opacity: 0.25;
+            filter: blur(5px);
+            z-index: -1;
+        }
+
+        .login-card {
+            width: 360px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+        }
+
+        .login-icon {
+            font-size: 3rem;
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font-weight: 600;
+            color: #5a3e1b;
+        }
+
+        .btn-primary {
+            background-color: #8B4513;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #a0522d;
+        }
+
+        .form-control:focus {
+            border-color: #8B4513;
+            box-shadow: 0 0 5px rgba(139,69,19,0.5);
+        }
+
+        a.text-success {
+            color: #8B4513 !important;
+        }
+
+        a.text-success:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card text-center">
+        <h3 class="mb-3">Biblioteca</h3>
 
         <?php if (isset($_GET['error'])): ?>
-            <div class="alert alert-danger text-center">
+            <div class="alert alert-danger text-center py-2">
                 <?php
                     if ($_GET['error'] == 1) {
                         echo "Correo o contraseña incorrecta.";
@@ -58,18 +125,16 @@ if (isset($_SESSION['usuario_id'])) {
             <button type="submit" class="btn btn-primary w-100 mb-3">
                 Iniciar sesión
             </button>
-
-            <div class="text-center">
-                <p class="mb-0">¿No tienes una cuenta?</p>
-                <a href="registro.php" class="text-decoration-none fw-bold text-primary">
-                    Regístrate aquí
-                </a>
-            </div>
         </form>
+
+        <div class="text-center mt-3">
+            <p class="mb-1">¿No tienes cuenta? <a href="registro.php" class="fw-bold text-success text-decoration-none">
+                Registrarse
+            </a></p>
+            
+        </div>
     </div>
 
-    <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -26,7 +26,7 @@ $stmt->execute();
 $resultado = $stmt->get_result();
 
 if ($resultado && $usuario = $resultado->fetch_assoc()) {
-    if (md5($password) === $usuario['contrasena']) {
+    if (password_verify($password, $usuario['contrasena'])) {
         $_SESSION['usuario_id'] = $usuario['id'];
         $_SESSION['nombre']     = $usuario['nombre'] . " " . $usuario['apellido'];
         $_SESSION['email']      = $usuario['email'];
@@ -37,7 +37,6 @@ if ($resultado && $usuario = $resultado->fetch_assoc()) {
         header("Location: ../dashboard.php");
         exit();
     } else {
-       
         $stmt->close();
         $mysql->desconectar();
         header("Location: ../views/login.php?error=1");
